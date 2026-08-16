@@ -1,0 +1,1063 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Semana Pre-Boda</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Work+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --sage-deep:#33513f;
+    --sage:#4a6f57;
+    --sage-soft:#e8efe6;
+    --sage-mist:#f4f7f2;
+    --gold:#b8945a;
+    --gold-soft:#f3e9d6;
+    --rose:#b76b6f;
+    --rose-soft:#f6e6e5;
+    --cream:#faf7f1;
+    --ink:#2a2f28;
+    --ink-soft:#5c6459;
+    --line:#dfe3d8;
+    --white:#ffffff;
+    --radius-card:16px;
+    --radius-sm:8px;
+    font-family:'Work Sans',sans-serif;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;}
+  .spb-root{
+    background:var(--cream);
+    color:var(--ink);
+    max-width:960px;
+    margin:0 auto;
+    padding:0 0 4rem;
+  }
+  .spb-hero{
+    background:var(--sage-deep);
+    color:var(--gold-soft);
+    padding:3rem 2rem 2.5rem;
+    border-radius:0 0 28px 28px;
+    text-align:center;
+    position:relative;
+    overflow:hidden;
+  }
+  .spb-hero::before{
+    content:"";
+    position:absolute;
+    inset:0;
+    background:
+      radial-gradient(circle at 15% 20%, rgba(184,148,90,0.18) 0, transparent 40%),
+      radial-gradient(circle at 85% 80%, rgba(184,148,90,0.14) 0, transparent 45%);
+  }
+  .spb-hero-inner{position:relative;}
+  .spb-eyebrow{
+    font-size:12px;
+    letter-spacing:.16em;
+    text-transform:uppercase;
+    color:#d9c79a;
+    margin:0 0 .6rem;
+  }
+  .spb-title{
+    font-family:'Fraunces',serif;
+    font-weight:600;
+    font-size:clamp(30px,5vw,46px);
+    margin:0 0 .5rem;
+    color:#fff;
+  }
+  .spb-subtitle{
+    font-size:16px;
+    color:#e4ead9;
+    margin:0 auto 1.8rem;
+    max-width:520px;
+    line-height:1.55;
+  }
+  .spb-note{
+    background:rgba(255,255,255,0.08);
+    border:1px solid rgba(255,255,255,0.18);
+    border-radius:14px;
+    padding:1.1rem 1.4rem;
+    max-width:620px;
+    margin:0 auto;
+    font-size:14.5px;
+    line-height:1.6;
+    color:#eef1e7;
+    text-align:left;
+  }
+  .spb-note b{color:#f3e2b8;font-weight:500;}
+
+  .spb-track{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:6px;
+    margin:1.8rem auto 0;
+    max-width:640px;
+    padding:0 1rem;
+  }
+  .spb-track-day{
+    flex:1;
+    text-align:center;
+  }
+  .spb-track-dot{
+    width:30px;height:30px;
+    border-radius:50%;
+    background:rgba(255,255,255,0.12);
+    border:1px solid rgba(255,255,255,0.3);
+    display:flex;align-items:center;justify-content:center;
+    font-size:13px;color:#f4ead2;
+    margin:0 auto .35rem;
+  }
+  .spb-track-day.is-wedding .spb-track-dot{
+    background:var(--gold);
+    border-color:var(--gold);
+    color:#33280f;
+    font-weight:500;
+  }
+  .spb-track-label{font-size:10.5px;color:#cdd6c1;letter-spacing:.03em;}
+  .spb-track-line{
+    position:absolute;
+  }
+
+  .spb-nav{
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px;
+    justify-content:center;
+    margin:1.8rem 1.5rem 0;
+    padding:6px;
+    background:var(--sage-soft);
+    border-radius:14px;
+  }
+  .spb-nav button{
+    font-family:'Work Sans',sans-serif;
+    border:none;
+    background:transparent;
+    color:var(--sage-deep);
+    padding:.55rem 1.1rem;
+    border-radius:10px;
+    font-size:14px;
+    cursor:pointer;
+    font-weight:500;
+    transition:background .15s ease;
+  }
+  .spb-nav button.active{background:var(--sage-deep);color:#fdf9f0;}
+  .spb-nav button:hover:not(.active){background:#dbe6d5;}
+
+  .spb-section{padding:2rem 1.5rem 0;display:none;}
+  .spb-section.active{display:block;}
+
+  .spb-h2{
+    font-family:'Fraunces',serif;
+    font-weight:600;
+    font-size:24px;
+    color:var(--sage-deep);
+    margin:0 0 .3rem;
+  }
+  .spb-h2-sub{
+    font-size:14px;
+    color:var(--ink-soft);
+    margin:0 0 1.4rem;
+    line-height:1.5;
+  }
+
+  .spb-daytabs{
+    display:flex;
+    gap:6px;
+    overflow-x:auto;
+    padding-bottom:4px;
+    margin-bottom:1.4rem;
+  }
+  .spb-daytabs button{
+    flex:0 0 auto;
+    font-family:'Work Sans',sans-serif;
+    border:1px solid var(--line);
+    background:var(--white);
+    color:var(--sage-deep);
+    padding:.5rem 1rem;
+    border-radius:999px;
+    font-size:13.5px;
+    font-weight:500;
+    cursor:pointer;
+    white-space:nowrap;
+  }
+  .spb-daytabs button.active{
+    background:var(--sage-deep);
+    border-color:var(--sage-deep);
+    color:#fff;
+  }
+  .spb-daytabs button.is-wedding.active{background:var(--gold);border-color:var(--gold);color:#3a2c10;}
+
+  .spb-daycard{
+    background:var(--white);
+    border:1px solid var(--line);
+    border-radius:var(--radius-card);
+    padding:1.5rem;
+    display:none;
+  }
+  .spb-daycard.active{display:block;}
+  .spb-daycard.wedding{border-color:var(--gold);background:linear-gradient(180deg,var(--gold-soft) 0%, #fff 120px);}
+
+  .spb-daycard-head{
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-start;
+    margin-bottom:1.2rem;
+    gap:1rem;
+    flex-wrap:wrap;
+  }
+  .spb-daycard-title{
+    font-family:'Fraunces',serif;
+    font-size:20px;
+    font-weight:600;
+    color:var(--sage-deep);
+    margin:0;
+  }
+  .spb-badge{
+    display:inline-block;
+    font-size:11.5px;
+    padding:.3rem .7rem;
+    border-radius:999px;
+    background:var(--gold);
+    color:#3a2c10;
+    font-weight:500;
+  }
+  .spb-water{
+    font-size:13px;
+    color:var(--sage-deep);
+    background:var(--sage-soft);
+    padding:.4rem .8rem;
+    border-radius:10px;
+    white-space:nowrap;
+  }
+
+  .spb-timeline{
+    display:flex;
+    flex-direction:column;
+    gap:0;
+  }
+  .spb-tstep{
+    display:grid;
+    grid-template-columns:64px 1fr;
+    gap:14px;
+    padding:.9rem 0;
+    border-bottom:1px dashed var(--line);
+  }
+  .spb-tstep:last-child{border-bottom:none;}
+  .spb-ttime{
+    font-size:12.5px;
+    color:var(--ink-soft);
+    padding-top:2px;
+    font-weight:500;
+  }
+  .spb-tlabel{
+    font-size:11px;
+    text-transform:uppercase;
+    letter-spacing:.06em;
+    color:var(--sage);
+    font-weight:600;
+    margin-bottom:2px;
+  }
+  .spb-ttext{
+    font-size:14.5px;
+    line-height:1.5;
+    color:var(--ink);
+  }
+  .spb-tmeta{
+    font-size:12.5px;
+    color:var(--ink-soft);
+    margin-top:2px;
+  }
+
+  details.spb-recipe{
+    margin-top:.5rem;
+    background:var(--sage-mist);
+    border-radius:10px;
+    padding:.55rem .8rem;
+  }
+  details.spb-recipe summary{
+    cursor:pointer;
+    font-size:13px;
+    color:var(--sage-deep);
+    font-weight:500;
+    list-style:none;
+  }
+  details.spb-recipe summary::-webkit-details-marker{display:none;}
+  details.spb-recipe summary::before{content:"receta ›  ";color:var(--gold);}
+  details.spb-recipe[open] summary::before{content:"receta ⌄  ";}
+  .spb-recipe-body{
+    font-size:13px;
+    line-height:1.55;
+    color:var(--ink-soft);
+    padding-top:.6rem;
+  }
+  .spb-recipe-body b{color:var(--ink);font-weight:500;}
+
+  .spb-tipbox{
+    margin-top:1.2rem;
+    background:var(--sage-soft);
+    border-left:3px solid var(--sage);
+    border-radius:10px;
+    padding:.8rem 1rem;
+    font-size:13.5px;
+    color:var(--sage-deep);
+    line-height:1.5;
+  }
+  .spb-tipbox b{font-weight:600;}
+
+  .spb-wedstrategy{
+    margin-top:1.2rem;
+    background:#fff;
+    border:1px solid var(--gold);
+    border-radius:12px;
+    padding:1rem 1.1rem;
+  }
+  .spb-wedstrategy h4{
+    font-family:'Fraunces',serif;
+    font-size:15px;
+    color:#8a6a2f;
+    margin:0 0 .5rem;
+    font-weight:600;
+  }
+  .spb-wedstrategy ul{margin:0;padding-left:1.1rem;font-size:13.5px;line-height:1.65;color:var(--ink);}
+  .spb-avoidbox{
+    margin-top:.9rem;
+    background:var(--rose-soft);
+    border-radius:12px;
+    padding:.9rem 1.1rem;
+    font-size:13.5px;
+    color:#7a3f43;
+    line-height:1.6;
+  }
+  .spb-avoidbox b{font-weight:600;}
+
+  .spb-smoothiegrid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(270px,1fr));
+    gap:1rem;
+  }
+  .spb-scard{
+    background:var(--white);
+    border:1px solid var(--line);
+    border-radius:var(--radius-card);
+    padding:1.2rem 1.3rem;
+  }
+  .spb-scard-day{
+    font-size:11px;
+    text-transform:uppercase;
+    letter-spacing:.08em;
+    color:var(--gold);
+    font-weight:600;
+    margin-bottom:.25rem;
+  }
+  .spb-scard-title{
+    font-family:'Fraunces',serif;
+    font-size:18px;
+    font-weight:600;
+    color:var(--sage-deep);
+    margin:0 0 .6rem;
+  }
+  .spb-macros{
+    display:flex;
+    flex-wrap:wrap;
+    gap:6px;
+    margin-bottom:.8rem;
+  }
+  .spb-macro{
+    font-size:11.5px;
+    background:var(--sage-mist);
+    color:var(--sage-deep);
+    padding:.28rem .6rem;
+    border-radius:8px;
+    font-weight:500;
+  }
+  .spb-scard ul.ing{
+    margin:0 0 .7rem;
+    padding-left:1.1rem;
+    font-size:13.5px;
+    line-height:1.6;
+    color:var(--ink);
+  }
+  .spb-scard-sub{
+    font-size:11px;
+    text-transform:uppercase;
+    letter-spacing:.05em;
+    color:var(--ink-soft);
+    margin:.7rem 0 .25rem;
+    font-weight:600;
+  }
+  .spb-scard p{
+    font-size:13.5px;
+    line-height:1.55;
+    color:var(--ink-soft);
+    margin:.2rem 0;
+  }
+  .spb-scard p b{color:var(--ink);font-weight:500;}
+
+  .spb-shopgrid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+    gap:1rem;
+    margin-bottom:2rem;
+  }
+  .spb-shopcat{
+    background:var(--white);
+    border:1px solid var(--line);
+    border-radius:14px;
+    padding:1rem 1.2rem;
+  }
+  .spb-shopcat h4{
+    font-family:'Fraunces',serif;
+    font-size:15px;
+    color:var(--sage-deep);
+    margin:0 0 .6rem;
+    font-weight:600;
+  }
+  .spb-shopcat ul{margin:0;padding:0;list-style:none;}
+  .spb-shopcat li{
+    font-size:13.5px;
+    color:var(--ink);
+    padding:.32rem 0;
+    border-bottom:1px solid var(--sage-mist);
+    display:flex;
+    justify-content:space-between;
+    gap:8px;
+  }
+  .spb-shopcat li:last-child{border-bottom:none;}
+  .spb-shopcat li span.qty{color:var(--ink-soft);font-size:12.5px;white-space:nowrap;}
+
+  .spb-table-wrap{overflow-x:auto;margin-bottom:1rem;}
+  table.spb-table{
+    width:100%;
+    border-collapse:collapse;
+    font-size:13.5px;
+    background:var(--white);
+    border-radius:12px;
+    overflow:hidden;
+  }
+  table.spb-table th{
+    background:var(--sage-deep);
+    color:#fdf9f0;
+    text-align:left;
+    padding:.6rem .8rem;
+    font-weight:500;
+    font-size:12.5px;
+  }
+  table.spb-table td{
+    padding:.55rem .8rem;
+    border-bottom:1px solid var(--sage-mist);
+    color:var(--ink);
+  }
+  table.spb-table tr:last-child td{border-bottom:none;}
+  table.spb-table tr.total td{
+    background:var(--gold-soft);
+    font-weight:600;
+    color:#5c451c;
+  }
+
+  .spb-totalcards{
+    display:flex;
+    gap:1rem;
+    flex-wrap:wrap;
+    margin:1.2rem 0 1.6rem;
+  }
+  .spb-totalcard{
+    flex:1;
+    min-width:180px;
+    background:var(--sage-deep);
+    color:#fdf9f0;
+    border-radius:14px;
+    padding:1rem 1.2rem;
+  }
+  .spb-totalcard .lbl{font-size:12px;color:#c8d6bf;margin-bottom:.2rem;}
+  .spb-totalcard .val{font-family:'Fraunces',serif;font-size:24px;font-weight:600;}
+
+  .spb-pantrynote{
+    font-size:13px;
+    color:var(--ink-soft);
+    background:var(--sage-mist);
+    border-radius:10px;
+    padding:.8rem 1rem;
+    line-height:1.55;
+    margin-bottom:.5rem;
+  }
+
+  .spb-prepbox{
+    background:var(--sage-deep);
+    color:#fdf9f0;
+    border-radius:18px;
+    padding:1.6rem 1.7rem;
+    margin-bottom:1.5rem;
+  }
+  .spb-prepbox h3{
+    font-family:'Fraunces',serif;
+    font-size:20px;
+    margin:0 0 .3rem;
+    color:#fff;
+    font-weight:600;
+  }
+  .spb-prepbox p.lead{font-size:13.5px;color:#d7e1cd;margin:0 0 1.1rem;}
+  .spb-checklist{margin:0;padding:0;list-style:none;display:grid;gap:.6rem;}
+  .spb-checklist li{
+    display:flex;
+    gap:.6rem;
+    align-items:flex-start;
+    font-size:14px;
+    line-height:1.5;
+    background:rgba(255,255,255,0.07);
+    padding:.6rem .8rem;
+    border-radius:10px;
+  }
+  .spb-checklist li::before{
+    content:"";
+    width:16px;height:16px;
+    border-radius:5px;
+    border:1.5px solid #b8c9ab;
+    flex:0 0 auto;
+    margin-top:1px;
+  }
+
+  footer.spb-foot{
+    text-align:center;
+    font-size:12px;
+    color:var(--ink-soft);
+    padding:2rem 1.5rem 0;
+  }
+
+  @media(max-width:560px){
+    .spb-hero{padding:2.2rem 1.2rem 2rem;border-radius:0 0 20px 20px;}
+    .spb-track-label{display:none;}
+    .spb-section{padding:1.6rem 1rem 0;}
+  }
+</style>
+</head>
+<body>
+<div class="spb-root">
+
+  <div class="spb-hero">
+    <div class="spb-hero-inner">
+      <p class="spb-eyebrow">Preparación para la boda</p>
+      <h1 class="spb-title">💚 Semana pre-boda</h1>
+      <p class="spb-subtitle">6 días para sentirse ligero, cómodo y llegar a la boda a tope</p>
+      <div class="spb-note">
+        El objetivo esta semana no es hacer una dieta extrema, sino comer sencillo, nutritivo y fácil de digerir. Si notas menos hinchazón y algo menos de peso, genial — pero no hace falta pasar hambre ni deshidratarse para que el traje siente mejor. <b>Una bajada de peso rápida en 6 días es sobre todo agua, glucógeno y contenido intestinal, no grasa</b>, y eso está bien: es justo lo que ayuda a sentirse menos hinchado el sábado.
+      </div>
+      <div class="spb-track" id="track"></div>
+    </div>
+  </div>
+
+  <div class="spb-nav" id="mainnav">
+    <button data-sec="dias" class="active">📅 Días</button>
+    <button data-sec="batidos">🥤 Batidos</button>
+    <button data-sec="compra">🛒 Lista de la compra</button>
+    <button data-sec="prep">🥣 Domingo de preparación</button>
+    <button data-sec="resumen">📊 Resumen</button>
+  </div>
+
+  <section class="spb-section active" id="sec-dias">
+    <h2 class="spb-h2">Planning día a día</h2>
+    <p class="spb-h2-sub">Horarios pensados para unos días de vacaciones con cosas que hacer. Toca cada receta para ver ingredientes y preparación.</p>
+    <div class="spb-daytabs" id="daytabs"></div>
+    <div id="daycards"></div>
+  </section>
+
+  <section class="spb-section" id="sec-batidos">
+    <h2 class="spb-h2">Batidos de la semana</h2>
+    <p class="spb-h2-sub">Un batido ligero distinto cada día. No son "detox" — el hígado y los riñones ya se encargan de eliminar los desechos del cuerpo; estos batidos simplemente suman fibra, vitaminas y algo de proteína dentro de una alimentación normal.</p>
+    <div class="spb-smoothiegrid" id="smoothiegrid"></div>
+  </section>
+
+  <section class="spb-section" id="sec-compra">
+    <h2 class="spb-h2">Lista de la compra — 6 días</h2>
+    <p class="spb-h2-sub">Cantidades pensadas para 1 persona y para que los ingredientes se repitan entre recetas. Precios orientativos de supermercados españoles (Mercadona, Carrefour, Lidl) a fecha de agosto de 2026 — pueden variar según tienda y temporada.</p>
+    <div class="spb-shopgrid" id="shopgrid"></div>
+
+    <div class="spb-table-wrap">
+      <table class="spb-table" id="pricetable"></table>
+    </div>
+
+    <div class="spb-totalcards">
+      <div class="spb-totalcard">
+        <div class="lbl">Coste total aproximado</div>
+        <div class="val">55 – 62 €</div>
+      </div>
+      <div class="spb-totalcard">
+        <div class="lbl">Coste aproximado por día</div>
+        <div class="val">≈ 9 – 10 €</div>
+      </div>
+    </div>
+
+    <div class="spb-pantrynote">
+      <b>Ya en la despensa lo más probable:</b> aceite de oliva virgen extra, sal, vinagre, especias sueltas (pimienta, hierbas provenzales). Estos no se incluyen en el total porque suelen durar meses. Arroz, avena, chía, canela y jengibre también son de larga duración: lo que sobre de esta semana sirve para varias semanas más.
+    </div>
+  </section>
+
+  <section class="spb-section" id="sec-prep">
+    <h2 class="spb-h2">Preparación de domingo</h2>
+    <div class="spb-prepbox">
+      <h3>Domingo: 45 minutos de preparación</h3>
+      <p class="lead">Con esto, entre semana casi todo es "coger y montar". Se puede hacer mientras se cocina la cena del domingo.</p>
+      <ul class="spb-checklist" id="prepchecklist"></ul>
+    </div>
+  </section>
+
+  <section class="spb-section" id="sec-resumen">
+    <h2 class="spb-h2">Resumen nutricional orientativo</h2>
+    <p class="spb-h2-sub">Estimación aproximada, no cálculo clínico. Calculado para un hombre adulto con actividad física ligera/moderada — ajustar cantidades según edad, altura, peso y nivel de actividad real.</p>
+    <div class="spb-table-wrap">
+      <table class="spb-table" id="summarytable"></table>
+    </div>
+    <div class="spb-pantrynote">
+      Sábado son valores solo hasta el momento de vestirse — después llega el banquete de la boda, que no está incluido aquí. Ningún día baja de 1.200 kcal ni plantea ayuno: la ligereza viene de elegir preparaciones sencillas (planchas, horno, vapor, cremas) y evitar frituras, exceso de sal y volúmenes muy grandes, no de comer menos de la cuenta.
+    </div>
+  </section>
+
+  <footer class="spb-foot">Semana pre-boda · plan orientativo, no sustituye la valoración de un profesional de la nutrición</footer>
+</div>
+
+<script>
+const DAYS = [
+  {
+    key:'lun', label:'Lunes', wedding:false,
+    breakfast:{time:'8:30', text:'2 huevos revueltos con tomate natural + 1 rebanada de pan integral', meta:'≈280 kcal · 18 g proteína'},
+    smoothie:{time:'11:00', text:'Batido verde energía matinal (ver sección Batidos)', meta:'≈110 kcal'},
+    lunch:{time:'14:00', text:'Salmón al horno con patata y calabacín', meta:'≈430 kcal · 32 g proteína · 25 min',
+      recipe:'<b>Ingredientes (1 pers.):</b> lomo de salmón fresco 150 g · patata 150 g · calabacín 150 g · aceite de oliva 1 cda · 1/4 limón · sal y hierbas provenzales.<br><b>Preparación:</b> horno a 200 °C. Patata cortada en rodajas finas, 15 min sola en la bandeja; añadir el calabacín en rodajas y el salmón encima, 15 min más. Terminar con un chorrito de limón y hierbas.'},
+    snack:{time:'17:30', text:'1 manzana + un puñado pequeño de nueces (opcional)', meta:'≈150 kcal'},
+    dinner:{time:'21:00', text:'Crema ligera de calabacín + 2 huevos cocidos', meta:'≈280 kcal · 16 g proteína · 20 min',
+      recipe:'<b>Ingredientes:</b> calabacín 300 g · 1/4 cebolla · caldo de verduras 200 ml · 2 huevos · aceite 1 cdta.<br><b>Preparación:</b> pochar la cebolla, añadir el calabacín y el caldo, cocer 15 min y triturar. Servir con los huevos cocidos troceados por encima.'},
+    water:'2 – 2,3 L',
+    tip:'Camina 10-15 min después de comer y cenar: ayuda a la digestión y reduce la sensación de hinchazón.'
+  },
+  {
+    key:'mar', label:'Martes', wedding:false,
+    breakfast:{time:'8:30', text:'Kéfir natural (150 ml) con avena (20 g) y un puñado de frutos rojos', meta:'≈240 kcal · 12 g proteína'},
+    smoothie:{time:'11:00', text:'Batido frutos rojos y chía (ver sección Batidos)', meta:'≈160 kcal'},
+    lunch:{time:'14:00', text:'Arroz con atún y verduras', meta:'≈420 kcal · 28 g proteína · 25 min',
+      recipe:'<b>Ingredientes:</b> arroz 60 g (peso en crudo) · atún al natural 1 lata (52 g escurrido) · pimiento 50 g · cebolla 30 g · zanahoria 50 g · tomate triturado 2 cdas · aceite 1 cda.<br><b>Preparación:</b> sofreír las verduras picadas, añadir el arroz y el doble de agua en volumen, cocer 18 min. Incorporar el atún al final, fuera del fuego.'},
+    snack:{time:'17:30', text:'1 kiwi + unas almendras', meta:'≈120 kcal'},
+    dinner:{time:'21:00', text:'Tortilla francesa de espinacas + ensalada de tomate', meta:'≈260 kcal · 17 g proteína · 15 min',
+      recipe:'<b>Ingredientes:</b> 2 huevos · espinacas frescas 50 g · 1 tomate · aceite 1 cdta · unas gotas de vinagre.<br><b>Preparación:</b> saltear las espinacas un minuto, batir con los huevos y cuajar en sartén a fuego medio. Servir con el tomate aliñado.'},
+    water:'2 – 2,3 L',
+    tip:'Reduce la sal añadida y usa especias (pimentón, orégano, comino) para dar sabor sin retener líquidos.'
+  },
+  {
+    key:'mie', label:'Miércoles', wedding:false,
+    breakfast:{time:'8:30', text:'Tostada de pan integral con tomate rallado y atún natural', meta:'≈260 kcal · 16 g proteína'},
+    smoothie:{time:'11:00', text:'Batido piña-pepino refrescante (ver sección Batidos)', meta:'≈70 kcal'},
+    lunch:{time:'14:00', text:'Pollo a la plancha con arroz y verduras salteadas', meta:'≈450 kcal · 40 g proteína · 25 min',
+      recipe:'<b>Ingredientes:</b> pechuga de pollo 150 g · arroz 50 g (crudo) · mezcla de pimiento, calabacín y zanahoria 150 g · aceite 1 cda · especias al gusto.<br><b>Preparación:</b> cocer el arroz aparte. Saltear las verduras en juliana, plancha el pollo salpimentado 3-4 min por lado. Servir todo junto.'},
+    snack:{time:'17:30', text:'Yogur natural sin azúcar', meta:'≈90 kcal'},
+    dinner:{time:'21:00', text:'Pescado blanco (merluza) con patata cocida y ensalada', meta:'≈320 kcal · 34 g proteína · 20 min',
+      recipe:'<b>Ingredientes:</b> merluza u otro pescado blanco 180 g · patata 150 g · lechuga y tomate 100 g · aceite 1 cdta · limón.<br><b>Preparación:</b> cocer la patata en rodajas. Pescado a la plancha o al vapor 3-4 min por lado con un chorrito de limón. Ensalada aliñada al lado.'},
+    water:'2 – 2,3 L',
+    tip:'Mastica despacio y evita bebidas con gas en las comidas: reducen notablemente la hinchazón abdominal.'
+  },
+  {
+    key:'jue', label:'Jueves', wedding:false,
+    breakfast:{time:'8:30', text:'2 huevos cocidos + una pieza de fruta', meta:'≈220 kcal · 14 g proteína'},
+    smoothie:{time:'11:00', text:'Batido manzana, canela y avena (ver sección Batidos)', meta:'≈180 kcal'},
+    lunch:{time:'14:00', text:'Ensalada de atún, huevo, patata y verduras', meta:'≈380 kcal · 28 g proteína · 20 min',
+      recipe:'<b>Ingredientes:</b> patata cocida 150 g · atún natural 1 lata · 1 huevo cocido · tomate 80 g · lechuga · aceite 1 cda · vinagre.<br><b>Preparación:</b> trocear la patata y el huevo (se pueden dejar cocidos del domingo), mezclar con el resto de ingredientes y aliñar.'},
+    snack:{time:'17:30', text:'Puñado pequeño de frutos secos', meta:'≈140 kcal'},
+    dinner:{time:'21:00', text:'Salmón al horno con verduras al vapor', meta:'≈300 kcal · 27 g proteína · 20 min',
+      recipe:'<b>Ingredientes:</b> salmón 130 g · brócoli 100 g · zanahoria 80 g · aceite 1 cdta · limón.<br><b>Preparación:</b> verduras al vapor 10-12 min. Salmón al horno u horno-grill 12-15 min a 200 °C con limón por encima.'},
+    water:'2 – 2,3 L',
+    tip:'Evita fritos y salsas pesadas por la noche: las grasas cocinadas a alta temperatura ralentizan la digestión.'
+  },
+  {
+    key:'vie', label:'Viernes', wedding:false,
+    breakfast:{time:'8:30', text:'Kéfir natural con avena (20 g)', meta:'≈210 kcal · 10 g proteína'},
+    smoothie:{time:'11:00', text:'Batido kiwi-espinaca suave (ver sección Batidos)', meta:'≈90 kcal'},
+    lunch:{time:'14:00', text:'Pollo a la plancha con calabacín, zanahoria y un poco de arroz', meta:'≈380 kcal · 38 g proteína · 20 min',
+      recipe:'<b>Ingredientes:</b> pechuga de pollo 150 g · calabacín 100 g · zanahoria 80 g · arroz 40 g (crudo) · aceite 1 cdta.<br><b>Preparación:</b> verduras al vapor o salteadas suaves, pollo a la plancha, arroz blanco simple como acompañamiento pequeño.'},
+    snack:{time:'17:30', text:'1 manzana', meta:'≈80 kcal'},
+    dinner:{time:'21:00', text:'Crema suave de calabacín y puerro + 1 huevo cocido', meta:'≈220 kcal · 10 g proteína · 20 min',
+      recipe:'<b>Ingredientes:</b> calabacín 200 g · puerro 50 g · caldo de verduras 200 ml · 1 huevo · aceite 1 cdta.<br><b>Preparación:</b> pochar el puerro, añadir calabacín y caldo, cocer 15 min y triturar. Servir con el huevo cocido troceado.'},
+    water:'2 – 2,3 L',
+    tip:'Hoy toca especialmente sencillo: evita legumbres, lácteos pesados y exceso de fibra cruda por la noche para llegar al sábado sin hinchazón residual.'
+  },
+  {
+    key:'sab', label:'Sábado', wedding:true,
+    breakfast:{time:'8:00', text:'Tostada fina de pan integral con pavo/jamón cocido + infusión de manzanilla', meta:'≈220 kcal · 14 g proteína'},
+    smoothie:{time:'9:30', text:'Batido ligero día B — poco volumen y poca fibra (ver sección Batidos)', meta:'≈100 kcal'},
+    lunch:{time:'12:30', text:'Pechuga de pollo o pescado blanco a la plancha + poco de arroz + calabacín cocido', meta:'≈340 kcal · 35 g proteína · 3-4 h antes de vestirse',
+      recipe:'<b>Ingredientes:</b> pechuga de pollo o pescado blanco 120 g · arroz blanco 40 g (crudo) · calabacín cocido 100 g · un chorrito de aceite, poca sal, sin salsas.<br><b>Preparación:</b> plancha o vapor, sin fritos ni condimentos fuertes. Cocinar sencillo y comer sin prisa.'},
+    snack:null,
+    dinner:null,
+    water:'1,5 – 2 L repartidos en pequeños sorbos, sin excederse justo antes de vestirse',
+    tip:'Nada de novedades hoy: solo alimentos que el cuerpo ya conoce de esta semana.'
+  }
+];
+
+const AVOID_SAT = [
+  'Grandes cantidades de legumbres (garbanzos, lentejas en cantidad).',
+  'Comidas muy grasas, fritos o rebozados.',
+  'Exceso de bebidas con gas o alcohol antes de vestirse.',
+  'Lácteos pesados o quesos curados en gran cantidad.',
+  'Platos muy salados: retienen líquido y aumentan la hinchazón.'
+];
+
+const STRATEGY_SAT = [
+  'Come la comida ligera 3-4 horas antes de ponerte el traje, no justo antes.',
+  'Bebe agua a sorbos durante la mañana, no de golpe justo antes de vestirte.',
+  'Evita alimentos o bebidas nuevas: nada de probar algo distinto hoy.',
+  'Un pequeño paseo después de comer ayuda a la digestión antes de vestirte.',
+  'No te saltes el agua ni la comida "para marcar más": la deshidratación y el hambre no ayudan y sí pueden sentar mal.'
+];
+
+const SMOOTHIES = [
+  {
+    day:'Lunes', name:'Batido verde energía matinal',
+    ing:['Espinacas frescas — 30 g','Piña natural o en su jugo — 100 g','1 kiwi','Jengibre fresco — una rodaja pequeña','Agua o bebida vegetal sin azúcar — 200 ml','Chía — 1 cdta (opcional)'],
+    kcal:'≈110 kcal', macros:'3 g prot · 22 g hc · 1,5 g grasa · 4 g fibra',
+    benefit:'Vitamina C, potasio y un extra de fibra suave para empezar el día con energía sin pesadez.',
+    prep:'Trituradora: todos los ingredientes 40-60 segundos hasta que quede fino.',
+    ahead:'Sí — corta y guarda espinaca, piña y kiwi en la nevera la noche anterior; tritura por la mañana en 2 minutos.',
+    when:'Media mañana, entre desayuno y comida.',
+    workout:'Si entrena por la mañana, mejor después del entrenamiento: aporta hidratos y algo de fibra para recuperar.',
+    alt:'Sin piña disponible: sustituir por medio plátano pequeño.'
+  },
+  {
+    day:'Martes', name:'Batido de frutos rojos y chía',
+    ing:['Frutos rojos congelados — 100 g','Kéfir natural — 200 ml','Chía — 1 cda','Canela — una pizca'],
+    kcal:'≈160 kcal', macros:'7 g prot · 20 g hc · 5 g grasa · 6 g fibra',
+    benefit:'Antioxidantes de los frutos rojos, proteína y probióticos del kéfir, y fibra saciante de la chía.',
+    prep:'Triturar el kéfir con los frutos rojos, añadir la chía y la canela y remover; dejar reposar 5 min para que la chía espese un poco.',
+    ahead:'Sí — se puede dejar montado (sin batir) en la nevera la noche anterior y batir por la mañana.',
+    when:'Media mañana.',
+    workout:'Buena opción después de entrenar por la proteína del kéfir.',
+    alt:'Sin frutos rojos: sustituir por fresas frescas o medio plátano.'
+  },
+  {
+    day:'Miércoles', name:'Batido piña-pepino refrescante',
+    ing:['Piña natural — 100 g','Pepino — 1/2 unidad','Zumo de 1/4 de limón','Jengibre fresco — una rodaja pequeña','Agua fría — 150 ml','Hielo al gusto'],
+    kcal:'≈70 kcal', macros:'1 g prot · 16 g hc · 0 g grasa · 2 g fibra',
+    benefit:'Muy ligero y refrescante, con buen aporte de agua, potasio y vitamina C; ideal en días de más calor.',
+    prep:'Triturar todos los ingredientes con hielo hasta que quede homogéneo.',
+    ahead:'Sí — cortar la piña y el pepino la noche anterior y guardar en la nevera.',
+    when:'Media mañana.',
+    workout:'No aporta apenas proteína; si entrena, mejor acompañarlo de un yogur o unas almendras.',
+    alt:'Sin pepino: usar 1/2 manzana verde en su lugar.'
+  },
+  {
+    day:'Jueves', name:'Batido manzana, canela y avena',
+    ing:['1 manzana','Avena — 20 g','Canela — una pizca','Kéfir o bebida vegetal sin azúcar — 200 ml'],
+    kcal:'≈180 kcal', macros:'6 g prot · 30 g hc · 3 g grasa · 5 g fibra',
+    benefit:'Más saciante gracias a la avena; buen aporte de fibra soluble y energía sostenida durante la mañana.',
+    prep:'Triturar la manzana troceada con la avena, la canela y el líquido elegido durante 1 minuto.',
+    ahead:'Sí — trocear la manzana la noche anterior con un poco de zumo de limón para que no se oxide.',
+    when:'Media mañana, o como parte del desayuno si el día empieza con más actividad.',
+    workout:'Buena opción antes de entrenar por su aporte de hidratos de digestión media.',
+    alt:'Sin avena: sustituir por 1 cda de copos de quinoa o simplemente omitirla.'
+  },
+  {
+    day:'Viernes', name:'Batido kiwi-espinaca suave',
+    ing:['1 kiwi','Espinacas frescas — 20 g','Pepino — 1/4 unidad','1/2 manzana','Agua — 150 ml'],
+    kcal:'≈90 kcal', macros:'2 g prot · 20 g hc · 0,5 g grasa · 3 g fibra',
+    benefit:'Versión más suave que la del lunes: menos volumen y fibra, pensada para no cargar el estómago el día antes de la boda.',
+    prep:'Triturar todos los ingredientes 40-50 segundos.',
+    ahead:'Sí — preparar las porciones de fruta y verdura la noche anterior.',
+    when:'Media mañana.',
+    workout:'Neutro; no hace falta ajustarlo al entrenamiento.',
+    alt:'Sin kiwi: sustituir por un puñado de uvas.'
+  },
+  {
+    day:'Sábado', name:'Batido ligero día B',
+    ing:['Medio plátano pequeño','Kéfir o bebida vegetal — 150 ml','Canela — una pizca','Sin chía ni piel de fruta'],
+    kcal:'≈100 kcal', macros:'4 g prot · 18 g hc · 1 g grasa · 1,5 g fibra',
+    benefit:'Deliberadamente bajo en volumen y en fibra: energía suave sin sensación de estómago lleno justo antes de vestirse.',
+    prep:'Triturar el plátano con el líquido y la canela 30 segundos, sin trozos.',
+    ahead:'No — mejor recién hecho por la mañana, es rápido (2 minutos).',
+    when:'A media mañana, con margen de 3-4 horas antes de ponerse el traje.',
+    workout:'No aplica — día sin entreno intenso.',
+    alt:'Sin plátano: usar 1/2 manzana muy madura, bien triturada.'
+  }
+];
+
+const SHOP = [
+  {cat:'Fruta', items:[
+    ['Piña natural','1 pieza pequeña o rodajas ~200 g'],
+    ['Kiwi','pack de 4'],
+    ['Frutos rojos congelados','bolsa 300 g'],
+    ['Limón','bolsa pequeña, 3-4 uds'],
+    ['Manzana','bolsa 1 kg (4-5 uds)'],
+    ['Plátano pequeño','1 ud'],
+  ]},
+  {cat:'Verdura', items:[
+    ['Calabacín','1,2 kg aprox.'],
+    ['Patata','1 kg'],
+    ['Pimiento','1 ud'],
+    ['Cebolla','2 uds'],
+    ['Zanahoria','bolsa 500 g'],
+    ['Tomate','500 g (4-5 uds)'],
+    ['Lechuga / ensalada de bolsa','1 bolsa'],
+    ['Espinacas frescas','bolsa 150 g'],
+    ['Brócoli','1 pieza o bolsa 300 g'],
+    ['Puerro','1 ud'],
+    ['Pepino','1 ud'],
+    ['Jengibre fresco','1 raíz pequeña'],
+  ]},
+  {cat:'Proteínas', items:[
+    ['Salmón fresco (lomo/filete)','~300 g'],
+    ['Pechuga de pollo','~450 g'],
+    ['Pescado blanco (merluza)','~180 g'],
+    ['Atún al natural (lata)','2 latas'],
+    ['Huevos','1 docena'],
+    ['Pavo o jamón cocido','1 sobre pequeño'],
+  ]},
+  {cat:'Lácteos / kéfir', items:[
+    ['Kéfir natural','2 botellas de 500 ml o 1 L'],
+    ['Yogur natural sin azúcar','pack de 4'],
+  ]},
+  {cat:'Cereales y carbohidratos', items:[
+    ['Arroz','paquete 1 kg (despensa)'],
+    ['Avena','paquete 500 g (despensa)'],
+    ['Pan integral','barra o molde pequeño'],
+  ]},
+  {cat:'Semillas / frutos secos', items:[
+    ['Chía','bolsa 200 g (despensa)'],
+    ['Nueces o almendras','bolsa 150-200 g'],
+  ]},
+  {cat:'Otros', items:[
+    ['Canela en polvo','bote (despensa)'],
+    ['Caldo de verduras (para las cremas)','tetrabrik o pastillas'],
+    ['Infusión de manzanilla','caja de bolsitas'],
+  ]},
+];
+
+const PRICES = [
+  ['Salmón fresco (lomo/filete)','~300 g','4,00 – 5,00 €','Mercadona / Carrefour'],
+  ['Pechuga de pollo','~450 g','3,00 – 3,50 €','Lidl / Mercadona'],
+  ['Pescado blanco (merluza)','~180 g','2,50 – 3,20 €','Mercadona / Carrefour'],
+  ['Atún al natural','2 latas','1,80 – 2,20 €','Cualquiera'],
+  ['Huevos','1 docena L','2,80 – 3,50 €','Mercadona / Carrefour'],
+  ['Patata','1 kg','1,00 – 1,50 €','Cualquiera'],
+  ['Calabacín','1,2 kg','1,80 – 2,40 €','Cualquiera'],
+  ['Pimiento','1 ud','0,50 – 0,80 €','Cualquiera'],
+  ['Cebolla','2 uds','0,50 – 0,70 €','Cualquiera'],
+  ['Zanahoria','500 g','0,80 – 1,00 €','Cualquiera'],
+  ['Tomate','500 g','1,20 – 1,80 €','Cualquiera'],
+  ['Lechuga / ensalada bolsa','1 bolsa','1,00 – 1,30 €','Cualquiera'],
+  ['Espinacas frescas','150 g','1,20 – 1,50 €','Mercadona / Lidl'],
+  ['Brócoli','300 g','1,20 – 1,60 €','Cualquiera'],
+  ['Puerro','1 ud','0,40 – 0,60 €','Cualquiera'],
+  ['Piña natural','~200 g','1,80 – 2,20 €','Cualquiera'],
+  ['Kiwi','pack de 4','2,00 – 2,50 €','Lidl / Aldi'],
+  ['Frutos rojos congelados','300 g','2,00 – 2,50 €','Mercadona / Lidl'],
+  ['Pepino','1 ud','0,50 – 0,80 €','Cualquiera'],
+  ['Limón','3-4 uds','1,20 – 1,80 €','Cualquiera'],
+  ['Manzana','1 kg','1,80 – 2,20 €','Cualquiera'],
+  ['Jengibre fresco','1 raíz pequeña','0,60 – 1,00 €','Mercadona / Carrefour'],
+  ['Canela en polvo','bote (despensa)','1,20 – 1,60 €','Cualquiera'],
+  ['Avena','500 g (despensa)','1,00 – 1,40 €','Cualquiera'],
+  ['Kéfir natural','~1 L','1,60 – 2,20 €','Mercadona / Lidl'],
+  ['Chía','200 g (despensa)','2,00 – 2,80 €','Mercadona / Carrefour'],
+  ['Arroz','1 kg (despensa)','1,20 – 1,80 €','Cualquiera'],
+  ['Pan integral','barra/molde pequeño','1,50 – 2,00 €','Cualquiera'],
+  ['Pavo o jamón cocido','sobre pequeño','1,80 – 2,20 €','Cualquiera'],
+  ['Yogur natural','pack de 4','1,50 – 1,80 €','Cualquiera'],
+  ['Nueces o almendras','150-200 g','2,50 – 3,50 €','Lidl / Aldi'],
+  ['Caldo de verduras + infusiones','varios','3,00 – 4,00 €','Cualquiera'],
+];
+
+const PREP = [
+  'Cocer 4-5 huevos y dejarlos en la nevera con cáscara (para el jueves y como tentempié).',
+  'Cocer una tanda de patata (para miércoles, jueves y ensaladas) y dejarla en un tápper.',
+  'Lavar, cortar y guardar en bolsas las verduras de los batidos: piña, kiwi, pepino, espinacas — porciones diarias listas para triturar.',
+  'Trocear el calabacín, la zanahoria y el pimiento que se usan en varias recetas y dejarlos en un tápper listos para cocinar.',
+  'Dejar el salmón y las pechugas de pollo porcionados (en raciones de 1 persona) en la nevera o congelador si no se van a usar en 2 días.',
+  'Organizar los ingredientes secos de cada batido (chía, avena, canela) en botes o bolsitas etiquetadas con el día.',
+  'Preparar un tápper con arroz cocido de más para reutilizar en 2-3 comidas de la semana.',
+];
+
+const SUMMARY = [
+  ['Lunes','≈1.480 kcal','92 g','26 g','Batido verde energía','Salmón, patata y calabacín','Crema de calabacín + huevos'],
+  ['Martes','≈1.520 kcal','98 g','28 g','Batido frutos rojos y chía','Arroz con atún y verduras','Tortilla de espinacas'],
+  ['Miércoles','≈1.550 kcal','105 g','24 g','Batido piña-pepino','Pollo, arroz y verduras','Merluza con patata'],
+  ['Jueves','≈1.500 kcal','95 g','27 g','Batido manzana-canela-avena','Ensalada de atún, huevo y patata','Salmón con verduras al vapor'],
+  ['Viernes','≈1.420 kcal','100 g','22 g','Batido kiwi-espinaca','Pollo con calabacín y arroz','Crema de calabacín y puerro'],
+  ['Sábado *','≈1.100 kcal','70 g','15 g','Batido ligero día B','Pollo/pescado, arroz y calabacín','—'],
+];
+
+function el(tag, cls, html){
+  const e = document.createElement(tag);
+  if(cls) e.className = cls;
+  if(html !== undefined) e.innerHTML = html;
+  return e;
+}
+
+function buildTrack(){
+  const track = document.getElementById('track');
+  DAYS.forEach(d => {
+    const item = el('div','spb-track-day'+(d.wedding?' is-wedding':''));
+    item.appendChild(el('div','spb-track-dot', d.wedding ? '💍' : ''));
+    item.appendChild(el('div','spb-track-label', d.label));
+    track.appendChild(item);
+  });
+}
+
+function buildNav(){
+  const buttons = document.querySelectorAll('#mainnav button');
+  buttons.forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      buttons.forEach(b=>b.classList.remove('active'));
+      btn.classList.add('active');
+      document.querySelectorAll('.spb-section').forEach(s=>s.classList.remove('active'));
+      document.getElementById('sec-'+btn.dataset.sec).classList.add('active');
+    });
+  });
+}
+
+function tstep(label, time, text, meta, recipeHtml){
+  const wrap = el('div','spb-tstep');
+  wrap.appendChild(el('div','spb-ttime', time));
+  const right = el('div','');
+  right.appendChild(el('div','spb-tlabel', label));
+  right.appendChild(el('div','spb-ttext', text));
+  if(meta) right.appendChild(el('div','spb-tmeta', meta));
+  if(recipeHtml){
+    const det = document.createElement('details');
+    det.className = 'spb-recipe';
+    const sum = document.createElement('summary');
+    sum.textContent = 'ver receta';
+    det.appendChild(sum);
+    det.appendChild(el('div','spb-recipe-body', recipeHtml));
+    right.appendChild(det);
+  }
+  wrap.appendChild(right);
+  return wrap;
+}
+
+function buildDays(){
+  const tabs = document.getElementById('daytabs');
+  const cards = document.getElementById('daycards');
+
+  DAYS.forEach((d, idx)=>{
+    const tabBtn = el('button', 'day-tab'+(d.wedding?' is-wedding':'')+(idx===0?' active':''), d.wedding ? d.label+' 💍' : d.label);
+    tabBtn.dataset.day = d.key;
+    tabBtn.addEventListener('click', ()=>{
+      document.querySelectorAll('.day-tab').forEach(b=>b.classList.remove('active'));
+      tabBtn.classList.add('active');
+      document.querySelectorAll('.spb-daycard').forEach(c=>c.classList.remove('active'));
+      document.getElementById('card-'+d.key).classList.add('active');
+    });
+    tabs.appendChild(tabBtn);
+
+    const card = el('div','spb-daycard'+(d.wedding?' wedding':'')+(idx===0?' active':''));
+    card.id = 'card-'+d.key;
+
+    const head = el('div','spb-daycard-head');
+    const titleWrap = el('div','');
+    titleWrap.appendChild(el('h3','spb-daycard-title', d.label));
+    if(d.wedding) titleWrap.appendChild(el('span','spb-badge', 'Día de la boda 💍'));
+    head.appendChild(titleWrap);
+    head.appendChild(el('div','spb-water', '💧 '+d.water));
+    card.appendChild(head);
+
+    const timeline = el('div','spb-timeline');
+    timeline.appendChild(tstep('Desayuno', d.breakfast.time, d.breakfast.text, d.breakfast.meta));
+    timeline.appendChild(tstep('Batido', d.smoothie.time, d.smoothie.text, d.smoothie.meta));
+    timeline.appendChild(tstep('Comida', d.lunch.time, d.lunch.text, d.lunch.meta, d.lunch.recipe));
+    if(d.snack) timeline.appendChild(tstep('Merienda (opcional)', d.snack.time, d.snack.text, d.snack.meta));
+    if(d.dinner) timeline.appendChild(tstep('Cena', d.dinner.time, d.dinner.text, d.dinner.meta, d.dinner.recipe));
+    card.appendChild(timeline);
+
+    card.appendChild(el('div','spb-tipbox', '<b>Para reducir hinchazón:</b> '+d.tip));
+
+    if(d.wedding){
+      const strat = el('div','spb-wedstrategy');
+      strat.appendChild(el('h4','', 'Las 3-4 horas antes de ponerte el traje'));
+      const ul = document.createElement('ul');
+      STRATEGY_SAT.forEach(s=> ul.appendChild(el('li','',s)));
+      strat.appendChild(ul);
+      card.appendChild(strat);
+
+      const avoid = el('div','spb-avoidbox');
+      let html = '<b>Mejor evitar hoy:</b><ul style="margin:.4rem 0 0;padding-left:1.1rem;">';
+      AVOID_SAT.forEach(a=> html += '<li>'+a+'</li>');
+      html += '</ul>';
+      avoid.innerHTML = html;
+      card.appendChild(avoid);
+    }
+
+    cards.appendChild(card);
+  });
+}
+
+function buildSmoothies(){
+  const grid = document.getElementById('smoothiegrid');
+  SMOOTHIES.forEach(s=>{
+    const card = el('div','spb-scard');
+    card.appendChild(el('div','spb-scard-day', s.day));
+    card.appendChild(el('div','spb-scard-title', s.name));
+    const macros = el('div','spb-macros');
+    macros.appendChild(el('span','spb-macro', s.kcal));
+    macros.appendChild(el('span','spb-macro', s.macros));
+    card.appendChild(macros);
+
+    const ul = document.createElement('ul');
+    ul.className = 'ing';
+    s.ing.forEach(i=> ul.appendChild(el('li','',i)));
+    card.appendChild(ul);
+
+    card.appendChild(el('p','', '<b>Beneficio:</b> '+s.benefit));
+    card.appendChild(el('p','', '<b>Preparación:</b> '+s.prep));
+    card.appendChild(el('p','', '<b>¿Noche anterior?:</b> '+s.ahead));
+    card.appendChild(el('p','', '<b>Cuándo tomarlo:</b> '+s.when));
+    card.appendChild(el('p','', '<b>Entreno:</b> '+s.workout));
+    card.appendChild(el('p','', '<b>Alternativa:</b> '+s.alt));
+    grid.appendChild(card);
+  });
+}
+
+function buildShop(){
+  const grid = document.getElementById('shopgrid');
+  SHOP.forEach(cat=>{
+    const box = el('div','spb-shopcat');
+    box.appendChild(el('h4','',cat.cat));
+    const ul = document.createElement('ul');
+    cat.items.forEach(([name,qty])=>{
+      const li = document.createElement('li');
+      li.appendChild(el('span','',name));
+      li.appendChild(el('span','qty',qty));
+      ul.appendChild(li);
+    });
+    box.appendChild(ul);
+    grid.appendChild(box);
+  });
+
+  const table = document.getElementById('pricetable');
+  let html = '<tr><th>Producto</th><th>Cantidad</th><th>Precio aprox.</th><th>Supermercado</th></tr>';
+  PRICES.forEach(([p,q,pr,s])=>{
+    html += `<tr><td>${p}</td><td>${q}</td><td>${pr}</td><td>${s}</td></tr>`;
+  });
+  table.innerHTML = html;
+}
+
+function buildPrep(){
+  const list = document.getElementById('prepchecklist');
+  PREP.forEach(p=> list.appendChild(el('li','',p)));
+}
+
+function buildSummary(){
+  const table = document.getElementById('summarytable');
+  let html = '<tr><th>Día</th><th>kcal aprox.</th><th>Proteína</th><th>Fibra</th><th>Batido</th><th>Comida</th><th>Cena</th></tr>';
+  SUMMARY.forEach(row=>{
+    html += '<tr>' + row.map(c=>`<td>${c}</td>`).join('') + '</tr>';
+  });
+  table.innerHTML = html;
+}
+
+buildTrack();
+buildNav();
+buildDays();
+buildSmoothies();
+buildShop();
+buildPrep();
+buildSummary();
+</script>
+</body>
+</html>
